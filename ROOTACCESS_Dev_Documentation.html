@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOTACCESS - Developer Documentation</title>
+    <link rel="icon" type="image/png" href="./docs_assets/rootaccess_logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        panel: '#111111',
+                        accent: '#3b82f6', // Changed to blue to distinguish Dev Docs
+                        accentHover: '#2563eb',
+                        termRed: '#ef4444',
+                        termGreen: '#22c55e',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', ' monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-twilight.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-powershell.min.js"></script>
+
+    <style>
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
+        .glass-panel { background: rgba(17, 17, 17, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(to right, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+        pre[class*="language-"] { border-radius: 0.5rem; border: 1px solid rgba(255,255,255,0.1); margin: 1em 0; }
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b border-gray-900 py-4 px-6 md:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="./docs_assets/rootaccess_logo.png" alt="ROOTACCESS Logo" class="h-8 w-8 object-contain opacity-80" style="filter: hue-rotate(90deg);">
+            <span class="text-xl font-bold tracking-wider">ROOT<span class="text-accent">ACCESS</span> <span class="text-gray-500 font-mono text-xs ml-2 border border-gray-700 px-2 py-1 rounded">// DEV_DOCS</span></span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-medium text-gray-400">
+            <a href="#stack" class="hover:text-accent transition-colors">Stack</a>
+            <a href="#architecture" class="hover:text-accent transition-colors">Architecture</a>
+            <a href="#ipc" class="hover:text-accent transition-colors">IPC & Backend</a>
+            <a href="#logic" class="hover:text-accent transition-colors">Algorithms</a>
+        </div>
+        <a href="ROOTACCESS_Documentation.html" class="text-sm font-medium text-gray-400 hover:text-white transition-colors flex items-center gap-2">← Back to Main</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-16 px-6 md:px-12 max-w-6xl mx-auto flex flex-col relative overflow-hidden" data-aos="fade-down">
+        <div class="absolute top-1/2 right-1/4 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+        <h1 class="text-4xl md:text-6xl font-bold mb-4 tracking-tight"><span class="gradient-text">Source Code</span> Documentation</h1>
+        <p class="text-lg text-gray-400 max-w-3xl leading-relaxed">
+            An in-depth technical dive into the ROOTACCESS application. This document details the technology stack, Inter-Process Communication (IPC) architecture, PowerShell service background execution, and the mathematical logic for state parsing.
+        </p>
+    </header>
+
+    <div class="px-6 md:px-12 max-w-6xl mx-auto grid grid-cols-1 gap-12 pb-24">
+        
+        <!-- Technology Stack -->
+        <section id="stack" class="scroll-mt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold border-b border-gray-800 pb-2 mb-6 flex items-center gap-3">
+                <span class="text-accent text-xl">#</span> Technology Stack & Languages
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-xl" data-aos="fade-right" data-aos-delay="100">
+                    <h3 class="text-termRed font-bold mb-3 flex items-center gap-2">⯈ Frontend (Renderer)</h3>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li><strong>React 18:</strong> For modular component-based UI rendering.</li>
+                        <li><strong>TypeScript:</strong> Providing strict typings for all component props and state variables.</li>
+                        <li><strong>Tailwind CSS:</strong> For rapid utility-first styling without external CSS files.</li>
+                        <li><strong>Framer Motion:</strong> For fluid page transitions and component animations.</li>
+                        <li><strong>Recharts / Lucide:</strong> For dashboard data visualization and iconography.</li>
+                    </ul>
+                </div>
+                <div class="glass-panel p-6 rounded-xl" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="text-termGreen font-bold mb-3 flex items-center gap-2">⯈ Backend (Main Process)</h3>
+                    <ul class="text-gray-300 space-y-2 text-sm">
+                        <li><strong>Electron:</strong> Chromium-based wrapper allowing native desktop capabilities.</li>
+                        <li><strong>Node.js:</strong> Powers the backend event loop and `child_process` modules.</li>
+                        <li><strong>PowerShell 5.1/7+:</strong> The fundamental engine executing WMI queries, Winget parameters, and AD commands.</li>
+                        <li><strong>Vite:</strong> Ultra-fast bundler for compiling React and Electron payloads.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Architecture -->
+        <section id="architecture" class="scroll-mt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold border-b border-gray-800 pb-2 mb-6 flex items-center gap-3">
+                <span class="text-accent text-xl">#</span> Architecture & Directory Structure
+            </h2>
+            <p class="text-gray-400 mb-4">ROOTACCESS rigidly separates concerns to prevent arbitrary code execution vulnerabilities in the renderer process.</p>
+            
+            <div class="bg-darker border border-gray-800 rounded-xl p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+<pre class="m-0 bg-transparent text-gray-300 border-0 p-0">
+ROOTACCESS/
+├── <span class="text-accent">electron/</span>              <span># MAIN PROCESS</span>
+│   ├── main.ts            <span class="text-gray-500">// Window lifecycle, IPC channel handlers</span>
+│   ├── api.ts             <span class="text-gray-500">// ContextBridge preload script (Security Boundary)</span>
+│   └── powershell.ts      <span class="text-gray-500">// The execution engine for OS commands</span>
+├── <span class="text-termGreen">src/</span>                   <span># RENDERER PROCESS</span>
+│   ├── components/        <span class="text-gray-500">// UI Modules (Dashboard, Maintenance, etc.)</span>
+│   ├── context/           <span class="text-gray-500">// React Providers (Auth, Theme)</span>
+│   ├── App.tsx            <span class="text-gray-500">// Main component router view</span>
+│   └── index.css          <span class="text-gray-500">// Tailwind imports and custom overrides</span>
+├── config.json            <span class="text-gray-500">// Editable default settings (Domain, OUs, Packages)</span>
+└── package.json           <span class="text-gray-500">// Dependency management and Vite build scripts</span>
+</pre>
+            </div>
+        </section>
+
+        <!-- IPC and Background Processes -->
+        <section id="ipc" class="scroll-mt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold border-b border-gray-800 pb-2 mb-6 flex items-center gap-3">
+                <span class="text-accent text-xl">#</span> Inter-Process Communication (IPC)
+            </h2>
+            <p class="text-gray-400 mb-6">The React UI cannot interact with the Windows OS directly for security reasons. It communicates with Node.js via strict preloaded channels.</p>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div data-aos="fade-right">
+                    <h3 class="text-lg font-semibold text-white mb-2">1. The Security Boundary (`api.ts`)</h3>
+                    <p class="text-sm text-gray-400 mb-4">We use `contextBridge.exposeInMainWorld` to only permit specific commands to flow from React to Electron.</p>
+<pre><code class="language-typescript">
+// electron/api.ts
+contextBridge.exposeInMainWorld('systemAPI', {
+    // Only allows sending specific events
+    installSoftware: (id: string) => ipcRenderer.invoke('install-software', id),
+    // Listens for stdout updates
+    onInstallProgress: (callback: Function) => 
+        ipcRenderer.on('install-progress', (_, data) => callback(data))
+});
+</code></pre>
+                </div>
+                <div data-aos="fade-left">
+                    <h3 class="text-lg font-semibold text-white mb-2">2. The Execution Engine (`powershell.ts`)</h3>
+                    <p class="text-sm text-gray-400 mb-4">When Electron receives the `install-software` event, it invokes a detached `child_process.spawn` to run PowerShell seamlessly.</p>
+<pre><code class="language-typescript">
+// electron/powershell.ts
+export class PowerShellService {
+    static installSoftware(packageId: string, win: BrowserWindow) {
+        const ps = spawn('powershell.exe', [
+            '-NoProfile', '-NonInteractive', 
+            '-Command', `winget install ${packageId} --accept-source-agreements`
+        ]);
+
+        ps.stdout.on('data', (data) => {
+            // Send live data back to React
+            win.webContents.send('install-progress', data.toString());
+        });
+    }
+}
+</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mathematical & Parsing Logic -->
+        <section id="logic" class="scroll-mt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold border-b border-gray-800 pb-2 mb-6 flex items-center gap-3">
+                <span class="text-accent text-xl">#</span> Mathematical Logic & Background Parsing
+            </h2>
+            
+            <div class="space-y-8">
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-l-termRed" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-lg font-bold text-white mb-2">Parsing System Analytics (The Dashboard)</h3>
+                    <p class="text-sm text-gray-400 mb-3">Windows Management Instrumentation (WMI) returns hardware memory metrics in raw bytes. The system polls this via `Get-CimInstance` every 3 seconds. The backend engine mathematically converts these raw bytes into human-readable Gigabytes.</p>
+                    <div class="bg-black/50 p-4 rounded text-sm font-mono text-gray-300">
+                        <span class="text-termRed">Input:</span> $Memory.FreePhysicalMemory (Returns Kilobytes)<br>
+                        <span class="text-termGreen">Algorithm:</span> GB = (KB / 1,048,576) [Rounded to 2 decimal places]<br>
+                        <span class="text-termGreen">Percentage Calculation:</span> (Used_RAM / Total_RAM) * 100
+                    </div>
+                    <p class="text-sm text-gray-400 mt-3">React takes this JSON formatted percentage to dynamically fill the radial progress bars in `Dashboard.tsx`.</p>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-l-termGreen" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-lg font-bold text-white mb-2">Analyzing Winget JSON / Regex Progress</h3>
+                    <p class="text-sm text-gray-400 mb-3">Winget natively outputs standard text streams to the terminal. To display a web GUI progress bar instead of a raw terminal block, the `SoftwareDeployment.tsx` component applies Regex matching against the `stdout` pipe from Node.</p>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-black/50 p-4 rounded text-xs font-mono text-gray-300">
+                            // STDOUT RAW STRING EXAMPLES:<br>
+                            Downloading... [==========   ]  70%
+                        </div>
+                        <div class="bg-black/50 p-4 rounded text-xs font-mono text-gray-300">
+                            // REGEX EXTRACTION:<br>
+                            const match = stdout.match(/\[.*\]\s+(\d+)%/);<br>
+                            if (match) setProgress(parseInt(match[1]));
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-l-accent" data-aos="fade-up" data-aos-delay="300">
+                    <h3 class="text-lg font-bold text-white mb-2">Subnet Mask / CIDR Calculations</h3>
+                    <p class="text-sm text-gray-400 mb-3">When assigning a Static IP in `NetworkConfig.tsx`, Windows requires an Integer mask (CIDR length, e.g., 24) rather than a string mask (e.g., 255.255.255.0).</p>
+                    <p class="text-sm text-gray-400">The application calculates the Prefix Length dynamically by splitting the standard Subnet Mask, calculating the binary mapping, and reducing it into a solid integer count, routing it securely through `New-NetIPAddress -PrefixLength 24`.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Adding New Features -->
+        <section id="extending" class="scroll-mt-24" data-aos="fade-up">
+            <h2 class="text-2xl font-bold border-b border-gray-800 pb-2 mb-6 flex items-center gap-3">
+                <span class="text-accent text-xl">#</span> How to Extend the Codebase
+            </h2>
+            <p class="text-gray-400 mb-4">Adding a new feature (like a new PowerShell script toggle) requires updating three layers of the app.</p>
+            
+            <ol class="list-decimal list-inside space-y-4 text-sm text-gray-300">
+                <li class="glass-panel p-4 rounded-lg" data-aos="fade-up" data-aos-delay="100">
+                    <strong>Create the Service Layer (powershell.ts)</strong><br>
+                    Add a new static method inside `PowerShellService`. Use `exec()` for short outputs (like grabbing machine data) and `spawn()` for long-running processes (like installations).
+                </li>
+                <li class="glass-panel p-4 rounded-lg" data-aos="fade-up" data-aos-delay="200">
+                    <strong>Map the IPC Route (main.ts & api.ts)</strong><br>
+                    Register the `ipcMain.handle` block inside `main.ts` pointing to your service. Next, expose a simple async function via `contextBridge` inside `api.ts`.
+                </li>
+                <li class="glass-panel p-4 rounded-lg" data-aos="fade-up" data-aos-delay="300">
+                    <strong>Call it in React (UI Components)</strong><br>
+                    Inside your `.tsx` component, trigger the function `await window.systemAPI.yourFunction()`. Wrap it in a `try/catch` and update your component state accordingly.
+                </li>
+            </ol>
+        </section>
+
+    </div>
+
+    <footer class="py-8 border-t border-gray-900 bg-black text-center text-sm text-gray-500">
+        <p>© 2026 ROOTACCESS Developer Docs.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+            });
+        });
+    </script>
+</body>
+</html>

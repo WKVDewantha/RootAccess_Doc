@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOTACCESS - System Administration & Deployment Tool</title>
+    <link rel="icon" type="image/png" href="./docs_assets/rootaccess_logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        panel: '#111111',
+                        accent: '#22c55e',
+                        accentHover: '#16a34a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['Fira Code', ' monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'dark',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            flowchart: {
+                htmlLabels: false
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+        }
+        .glass-panel {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #22c55e, #3b82f6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        .screenshot-placeholder {
+            border: 2px dashed rgba(34, 197, 94, 0.3);
+            background: rgba(34, 197, 94, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+            color: #22c55e;
+            font-weight: 500;
+        }
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel border-b-0 py-4 px-6 md:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="./docs_assets/rootaccess_logo.png" alt="ROOTACCESS Logo" class="h-8 w-8 object-contain">
+            <span class="text-xl font-bold tracking-wider">ROOT<span class="text-accent">ACCESS</span></span>
+        </div>
+        <div class="hidden md:flex gap-6 text-sm font-medium text-gray-400">
+            <a href="#overview" class="hover:text-accent transition-colors">Overview</a>
+            <a href="#features" class="hover:text-accent transition-colors">Features</a>
+            <a href="#architecture" class="hover:text-accent transition-colors">Architecture</a>
+            <a href="#how-to-use" class="hover:text-accent transition-colors">How to Use</a>
+            <a href="#roadmap" class="hover:text-accent transition-colors">Roadmap</a>
+        </div>
+        <div class="flex gap-4 items-center">
+            <a href="./ROOTACCESS_Dev_Documentation.html" class="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors">Dev Docs</a>
+            <a href="#roadmap" class="bg-accent/10 border border-accent text-accent px-4 py-2 rounded text-sm font-semibold hover:bg-accent hover:text-white transition-all">VIP Mode Preview</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-6 md:px-12 max-w-7xl mx-auto flex flex-col items-center text-center relative overflow-hidden" data-aos="fade-down">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/20 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+        <span class="px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-accent text-xs font-semibold mb-6 uppercase tracking-widest">Official Project Documentation</span>
+        <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">System Administration, <br><span class="gradient-text">Redefined and Automated.</span></h1>
+        <p class="text-xl text-gray-400 text-center max-w-3xl mb-10 leading-relaxed">
+            ROOTACCESS is an advanced workstation configuration and deployment tool built for modern IT administrators. It replaces fragmented scripts and disparate administrative panels with a single, incredibly fast, unified interface.
+        </p>
+        
+        <div class="w-full max-w-5xl rounded-xl overflow-hidden glass-panel border border-accent/20 shadow-2xl shadow-accent/10 relative mt-10" data-aos="fade-up" data-aos-delay="200">
+            <!-- Screenshot space -->
+            <img src="./docs_assets/hero_dashboard.png" alt="ROOTACCESS Dashboard UI" class="w-full h-auto object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+            <div class="h-[500px] screenshot-placeholder hidden flex-col gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>[Insert Dashboard Hero Image Here]</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Why It's Special Section -->
+    <section id="overview" class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="mb-16 text-center">
+            <h2 class="text-3xl font-bold mb-4">Why ROOTACCESS is Special</h2>
+            <div class="h-1 w-20 bg-accent mx-auto rounded"></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div data-aos="fade-right">
+                <h3 class="text-2xl font-semibold mb-4 text-white">The IT Administrator's Dilemma</h3>
+                <p class="text-gray-400 mb-6 leading-relaxed">
+                    Historically, setting up a new Windows workstation or server required navigating through multiple legacy Control Panel applets, running various independent PowerShell scripts, keeping track of Winget installation IDs, and manually configuring domain settings. 
+                </p>
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-medium text-white">Centralized Automation</h4>
+                            <p class="text-sm text-gray-400 mt-1">Combines Network configuration, Domain joining, Software provisioning, and Policy application into a single React-based interface.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 border border-accent/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-medium text-white">Secure Native Bridge</h4>
+                            <p class="text-sm text-gray-400 mt-1">Utilizes an Electron native bridge to execute powerful PowerShell commands securely without exposing standard command lines to the user.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl border border-gray-800" data-aos="fade-left">
+                <h4 class="text-center font-medium mb-6 text-gray-300">Time Saved per Machine Setup</h4>
+                <div class="relative w-full h-[250px]">
+                    <canvas id="timeSavedChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="py-20 bg-panel border-y border-gray-900">
+        <div class="px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="mb-16 text-center">
+                <h2 class="text-3xl font-bold mb-4">Technical Architecture</h2>
+                <div class="h-1 w-20 bg-accent mx-auto rounded"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">ROOTACCESS leverages modern web technologies wrapped in Electron to safely interact with core Windows system APIs via PowerShell.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-12 items-center bg-darker p-8 rounded-2xl border border-gray-800" data-aos="zoom-in">
+                <div class="w-full md:w-3/5">
+                    <div class="mermaid">
+                        graph TD
+                        %% Setup Styles
+                        classDef frontend fill:#1e1e1e,stroke:#22c55e,stroke-width:2px,color:#fff
+                        classDef backend fill:#1e1e1e,stroke:#3b82f6,stroke-width:2px,color:#fff
+                        classDef system fill:#1e1e1e,stroke:#ef4444,stroke-width:2px,color:#fff
+                        
+                        %% Nodes
+                        A["React 18 UI \nVite + Tailwind"]:::frontend
+                        B["Electron IPC Bridge \ncontextBridge"]:::frontend
+                        C["Electron Main Process \nNode.js"]:::backend
+                        D["PowerShellService \nChild Process"]:::backend
+                        E["Windows Registry \n& Settings"]:::system
+                        F["Winget CLI \nPackage Manager"]:::system
+                        G["Active Directory \nDomain Services"]:::system
+
+                        %% Connections
+                        A <-->|api.invoke| B
+                        B <-->|ipcRenderer / ipcMain| C
+                        C <-->|Execute Scripts| D
+                        D -->|Configures| E
+                        D -->|Installs| F
+                        D -->|Joins| G
+                    </div>
+                </div>
+                <div class="w-full md:w-2/5 space-y-4">
+                    <h3 class="text-xl font-bold text-white mb-4">The Stack</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-accent mr-2">✓</span>
+                            <div><strong class="text-white block">Frontend Layer:</strong> React 18, TailwindCSS, Framer Motion for a fluid, responsive UI.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-400 mr-2">✓</span>
+                            <div><strong class="text-white block">IPC Bridge:</strong> Secure context bridge separating the web layer from Node.js APIs.</div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-400 mr-2">✓</span>
+                            <div><strong class="text-white block">System Layer:</strong> Dedicated `powershell.ts` service executing native cmdlets, Winget parameters, and WMI queries.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="py-20 px-6 md:px-12 max-w-7xl mx-auto">
+        <div class="mb-16 text-center">
+            <h2 class="text-3xl font-bold mb-4">Comprehensive Feature set</h2>
+            <div class="h-1 w-20 bg-accent mx-auto rounded"></div>
+        </div>
+
+        <div class="space-y-24">
+            <!-- Feature 1: Dashboard -->
+            <div class="flex flex-col md:flex-row-reverse gap-10 items-center">
+                <div class="w-full md:w-1/2" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-white mb-3">Real-time Dashboard Metrics</h3>
+                    <p class="text-gray-400 mb-4">Live monitoring of system resources via optimized PowerShell queries. Tracks CPU load, memory usage, disk space, and active network connections in an aesthetically pleasing Recharts visualization.</p>
+                    <ul class="text-sm text-gray-500 space-y-1 list-disc list-inside">
+                        <li>Hardware specification polling</li>
+                        <li>Network adapter status monitoring</li>
+                        <li>Advanced diagnostics shortcut</li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2 glass-panel rounded-xl overflow-hidden p-2" data-aos="fade-right">
+                    <div class="h-[300px] w-full bg-cover bg-center rounded" style="background-image: url('./docs_assets/Realtime_Dashboard.png');"></div>
+                </div>
+            </div>
+
+            <!-- Feature 2: Software Management -->
+            <div class="flex flex-col md:flex-row gap-10 items-center">
+                <div class="w-full md:w-1/2" data-aos="fade-right">
+                    <h3 class="text-2xl font-bold text-white mb-3">Software Management Hub</h3>
+                    <p class="text-gray-400 mb-4">Replaces manual software installations. A fully integrated UI wrapper for the Windows Package Manager (winget). Categorized applications with one-click bulk installation and real-time progress tracking.</p>
+                    <ul class="text-sm text-gray-500 space-y-1 list-disc list-inside">
+                        <li>Categorized software groups (Browsers, IDEs, etc.)</li>
+                        <li>Silent background installation via PowerShell</li>
+                        <li>Real-time JSON response parsing for progress</li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2 glass-panel rounded-xl overflow-hidden p-2" data-aos="fade-left">
+                    <div class="h-[300px] w-full bg-cover bg-center rounded" style="background-image: url('./docs_assets/software_manager.png');"></div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Deployment -->
+            <div class="flex flex-col md:flex-row-reverse gap-10 items-center">
+                <div class="w-full md:w-1/2" data-aos="fade-left">
+                    <h3 class="text-2xl font-bold text-white mb-3">Zero-Touch Network & Domain Setup</h3>
+                    <p class="text-gray-400 mb-4">Streamline machine prep. Quickly assign static IPv4/v6 addresses, configure DNS, rename the computer, and join Active Directory domains without restarting until all tasks are queued.</p>
+                    <table class="w-full mt-4 text-sm text-left text-gray-400 border border-gray-800 rounded-lg overflow-hidden">
+                        <thead class="bg-gray-900 border-b border-gray-800 text-gray-300">
+                            <tr>
+                                <th class="px-4 py-2">Module</th>
+                                <th class="px-4 py-2">Functionality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-800 bg-black/50">
+                                <td class="px-4 py-2 font-medium">NetworkConfig</td>
+                                <td class="px-4 py-2">DHCP toggle, Static IP, Multiple DNS</td>
+                            </tr>
+                            <tr class="border-b border-gray-800">
+                                <td class="px-4 py-2 font-medium">DomainJoin</td>
+                                <td class="px-4 py-2">Add-Computer execution with secure credentials</td>
+                            </tr>
+                            <tr class="border-b border-gray-800 bg-black/50">
+                                <td class="px-4 py-2 font-medium">SystemPrep</td>
+                                <td class="px-4 py-2">Rename-Computer, local account creation</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="w-full md:w-1/2 glass-panel rounded-xl overflow-hidden p-2" data-aos="fade-right">
+                    <div class="h-[300px] w-full bg-cover bg-top rounded" style="background-image: url('./docs_assets/network_config.png');"></div>
+                </div>
+            </div>
+
+            <!-- Feature 4: Policies and Maintenance -->
+            <div class="glass-panel border border-gray-800 hover:border-accent/40 transition-all duration-500 rounded-xl p-8 relative overflow-hidden group" data-aos="fade-up">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-[60px] group-hover:bg-accent/10 transition-all duration-700"></div>
+                <h3 class="text-2xl font-bold text-white mb-6 text-center relative z-10">Policies & System Maintenance</h3>
+                <div class="grid md:grid-cols-2 gap-8 relative z-10">
+                    <div class="bg-black/30 p-6 rounded-xl border border-gray-800/50 hover:border-accent/30 transition-colors">
+                        <h4 class="text-accent font-semibold mb-3 flex items-center gap-2 text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            Security Policies
+                        </h4>
+                        <p class="text-sm text-gray-400 mb-4">Enforce registry-level restrictions instantly.</p>
+                        <ul class="text-sm text-gray-300 space-y-3">
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                                Enable/Disable RDP Access
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                                USB Storage Device Blocking
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                                Windows Defender Toggles
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-accent"></div>
+                                Website URL Blocking (Hosts file editing)
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-black/30 p-6 rounded-xl border border-gray-800/50 hover:border-blue-500/30 transition-colors">
+                        <h4 class="text-blue-400 font-semibold mb-3 flex items-center gap-2 text-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                            Maintenance Tooling
+                        </h4>
+                        <p class="text-sm text-gray-400 mb-4">Automated system cleanup routines.</p>
+                        <ul class="text-sm text-gray-300 space-y-3">
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                Bloatware removal scripts
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                Disk Cleanup & Temp File wiping
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                DNS Flushing and Network Reset
+                            </li>
+                            <li class="flex items-center gap-3 bg-dark/50 px-4 py-3 rounded-lg border border-gray-800/30">
+                                <div class="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
+                                Startup Item Management
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Use Section -->
+    <section id="how-to-use" class="py-20 bg-darker border-t border-gray-900">
+        <div class="px-6 md:px-12 max-w-7xl mx-auto">
+            <div class="mb-16 text-center">
+                <h2 class="text-3xl font-bold mb-4">How to Use ROOTACCESS</h2>
+                <div class="h-1 w-20 bg-accent mx-auto rounded"></div>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">A quick guide to navigating the core modules and automating your workflow.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Step 1 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">1</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Getting Started</h3>
+                    <p class="text-sm text-gray-400 mb-4">Launch the application as Administrator. The Dashboard will immediately load system metrics. Use the sidebar to track CPU, RAM, and Network status.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">2</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Network & Domain</h3>
+                    <p class="text-sm text-gray-400 mb-4">Navigate to the Deployment Hub. Assign a static IP or enable DHCP. Next, rename the computer in System Prep and start the automated Domain Join process.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">3</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Software & Fonts</h3>
+                    <p class="text-sm text-gray-400 mb-4">Under Software Management, select critical business applications (e.g., Browsers, IDEs) from the App Library and install them in bulk via Winget.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">4</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Policies & Security</h3>
+                    <p class="text-sm text-gray-400 mb-4">Secure the workstation by toggling RDP access, blocking removable USB storage, editing Hosts files, and configuring power plans instantly.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="500">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">5</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Maintenance Setup</h3>
+                    <p class="text-sm text-gray-400 mb-4">Before handoff, run standard deep clean operations to wipe temp files, flush DNS, and clear standby memory for optimal system performance.</p>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="glass-panel p-6 rounded-xl border border-gray-800 hover:border-accent/40 transition-colors" data-aos="fade-up" data-aos-delay="600">
+                    <div class="w-10 h-10 rounded-full bg-accent/20 text-accent flex items-center justify-center font-bold mb-4 border border-accent/30">6</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Monitor Logs</h3>
+                    <p class="text-sm text-gray-400 mb-4">Keep an eye on the Activity Logs tab. Every installation, automated script execution, and security policy change is recorded for troubleshooting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap & New Features Section -->
+    <section id="roadmap" class="py-20 bg-accent/5 border-t border-accent/10 relative overflow-hidden">
+        <div class="px-6 md:px-12 max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                <div>
+                    <span class="text-accent font-mono text-sm tracking-wider">UPCOMING IN V2.0</span>
+                    <h2 class="text-3xl font-bold mt-1">Product Roadmap</h2>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- VIP Mode -->
+                <div class="glass-panel border-accent/30 border p-8 rounded-xl relative overflow-hidden group" data-aos="fade-right">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-[40px] group-hover:bg-accent/20 transition-all duration-500"></div>
+                    <div class="bg-accent text-darker text-xs font-bold px-2 py-1 rounded inline-block mb-4">HIGH PRIORITY</div>
+                    <h3 class="text-2xl font-bold text-white mb-3">"VIP Mode" for Windows Server</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Currently running exclusively on Windows Client computing versions (Windows 10/11)? Soon, we are rolling out <b>VIP Mode</b> designed strictly for System Admins managing Windows Servers. 
+                    </p>
+                    <ul class="mt-4 space-y-2 text-sm text-gray-300 font-mono">
+                        <li>> Server Roles & Features Management via UI</li>
+                        <li>> IIS Quick Configuration Hub</li>
+                        <li>> Active Directory Users & Computers (ADUC) Web-Bridge</li>
+                        <li>> Server-optimized performance dashboards</li>
+                    </ul>
+                </div>
+
+                <!-- Official Website -->
+                <div class="glass-panel p-8 rounded-xl relative overflow-hidden" data-aos="fade-left">
+                    <div class="bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded inline-block mb-4">ANNOUNCEMENT</div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Official Website Launch</h3>
+                    <p class="text-gray-400 leading-relaxed mb-6">
+                        We are preparing to take ROOTACCESS out of beta. A centralized community and official documentation hub will be launching soon.
+                    </p>
+                    
+                    <div class="bg-darker p-4 rounded-lg border border-gray-800">
+                        <p class="text-sm text-gray-500 mb-2">Expected website features:</p>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2 h-2 rounded-full bg-accent"></div>
+                            <span class="text-sm text-gray-300">Software package submissions</span>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-2 h-2 rounded-full bg-accent"></div>
+                            <span class="text-sm text-gray-300">Community policy templates</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-accent"></div>
+                            <span class="text-sm text-gray-300">Detailed API implementation guides</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-10 border-t border-gray-900 bg-black text-center text-sm text-gray-500">
+        <p>© 2026 ROOTACCESS System Tools. All rights reserved.</p>
+        <p class="mt-2 text-xs">Developed for Advanced Windows System Administration under secure environment.</p>
+    </footer>
+
+    <!-- Initialize Chart -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('timeSavedChart').getContext('2d');
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Manual Setup', 'Using Scripts', 'ROOTACCESS'],
+                    datasets: [{
+                        label: 'Time to Provision (Minutes)',
+                        data: [120, 45, 12],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.4)', // red
+                            'rgba(245, 158, 11, 0.4)', // yellow
+                            'rgba(34, 197, 94, 0.8)'   // green (accent)
+                        ],
+                        borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(34, 197, 94, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#9ca3af'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+            });
+        });
+    </script>
+</body>
+</html>
